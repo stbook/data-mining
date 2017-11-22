@@ -1,0 +1,61 @@
+function [ Xs, gms ] = gaussianMixtureGenerator(n, k, dim)
+%generate n gaussian mixtures with k clusters, and dim dimensions
+%Xs = num * dim
+%gms = n * gm
+
+% number of points
+num = 10000;
+
+% lower bound and upper bound for mu(mean) and sigma(standard deviation)
+lower_bound_mu = -20;
+upper_bound_mu = 20;
+lower_bound_sigma = 2;
+upper_bound_sigma = 5;
+
+%{
+Mu = [1 2;-3 -5];
+Sigma = cat(3,[2 0;0 .5],[1 0;0 1]);
+P = ones(1,2)/2;
+gm = gmdistribution(Mu,Sigma,P);
+%}
+
+Xs = zeros(n, dim);
+gms = cell(n);
+
+% generate a gaussian mixture during each iteration
+for i = 1:n
+    % build the mu matrix, its dimension is k * d
+    mu = lower_bound_mu + (upper_bound_mu - lower_bound_mu) * rand(k, dim);
+    
+    % build the sigma matrix, its dimension is d * d * k
+    sigma = [];
+    for j = 1:k
+        sigma = cat(3, sigma, random_conv(dim));
+    end
+    
+    % build P, its dimension is 1 * k
+    p = ones(1, k) / k;
+    
+    gm = gmdistribution(mu, sigma, p);
+    X = random(gm, num);
+    
+    Xs = [Xs; X];
+    gms(i) = gm;
+end
+
+
+end
+
+function [ A ] = random_conv ( n )
+% generate n * n dimensional covariance matrix
+
+% lower bound and upper bound
+a = 2;
+b = 5;
+
+Q = orth(a + (b - a) * rand(n));
+D = diag(abs(a + (b - a) * rand(n, 1)) + 0.3);
+A = Q * D * Q';
+
+end
+
