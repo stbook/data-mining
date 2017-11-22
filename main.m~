@@ -1,27 +1,74 @@
 close all;
 clear all;
 
-% generate synthetic data
-%g = gmdistribution([1;10],2,[.6;.4])
-%hist(random(g,1000),40)
+% create 10 different 2-dim synthetic data
+Xs = [];
+gms = cell(1);
+for i = 1:10
+    [X, gm] = gaussianMixtureGenerator(10, 2);
+    Xs = cat(3, Xs, X);
+    gms{i} = gm;
+end
+save('2-dim-syntheticData.mat', 'Xs', 'gms');
 
-%{
-Mu = [1 2;-3 -5];
-Sigma = cat(3,[2 0.2;0.2 .5],[1 0.6;0.6 0.8]);
-P = ones(1,2)/2;
-gm = gmdistribution(Mu,Sigma,P);
+% create 10 different 5-dim synthetic data
+Xs = [];
+gms = cell(1);
+for i = 1:10
+    [X, gm] = gaussianMixtureGenerator(10, 5);
+    Xs = cat(3, Xs, X);
+    gms{i} = gm;
+end
+save('5-dim-syntheticData.mat', 'Xs', 'gms);
 
-gmPDF = @(x,y)pdf(gm,[x y]);
+% create 10 different 10-dim synthetic data
+Xs = [];
+gms = cell(1);
+for i = 1:10
+    [X, gm] = gaussianMixtureGenerator(10, 10);
+    Xs = cat(3, Xs, X);
+    gms{i} = gm;
+end
+save('10-dim-syntheticData.mat', Xs, gms);
 
-figure;
-ezcontour(gmPDF,[-10 10],[-10 10]);
-hold on
-title('GMM - PDF Contours');
+% create 10 different 20-dim synthetic data
+Xs = [];
+gms = cell(1);
+for i = 1:10
+    [X, gm] = gaussianMixtureGenerator(10, 20);
+    Xs = cat(3, Xs, X);
+    gms{i} = gm;
+end
+save('20-dim-syntheticData.mat', Xs, gms);
 
-X = random(gm,10000);
-scatter(X(:,1),X(:,2),10,'.')
-%}
+% create 10 different 30-dim synthetic data
+Xs = [];
+gms = cell(1);
+for i = 1:10
+    [X, gm] = gaussianMixtureGenerator(10, 30);
+    Xs = cat(3, Xs, X);
+    gms{i} = gm;
+end
+save('30-dim-syntheticData.mat', Xs, gms);
 
-[Xs, gms] = gaussianMixtureGenerator(1, 2);
-gm = gms(1);
+% create 10 different 50-dim synthetic data
+Xs = [];
+gms = cell(1);
+for i = 1:10
+    [X, gm] = gaussianMixtureGenerator(10, 50);
+    Xs = cat(3, Xs, X);
+    gms{i} = gm;
+end
+save('50-dim-syntheticData.mat', Xs, gms);
+
+% create 10 different 100-dim synthetic data
+Xs = [];
+gms = cell(1);
+for i = 1:10
+    [X, gm] = gaussianMixtureGenerator(10, 100);
+    Xs = cat(3, Xs, X);
+    gms{i} = gm;
+end
+save('100-dim-syntheticData.mat', Xs, gms);
+
 
