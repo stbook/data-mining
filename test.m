@@ -22,7 +22,7 @@ X = random(gm,10000);
 scatter(X(:,1),X(:,2),10,'.')
 %}
 
-[X, gm] = gaussianMixtureGenerator(10, 100);
+%[X, gm] = gaussianMixtureGenerator(10, 100);
 
 %{
 gmPDF = @(x,y)pdf(gm,[x y]);
@@ -32,3 +32,7 @@ hold on
 title('GMM - PDF Contours');
 scatter(X(:,1),X(:,2),20,'.')
 %}
+
+
+
+%%

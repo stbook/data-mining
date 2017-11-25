@@ -21,9 +21,10 @@ L1 = 0;
 while length(unique(L)) ~= k
     
     % The k-means++ initialization.
-    C = X(:,1+round(rand*(size(X,2)-1)));
-    L = ones(1,size(X,2));
+    C = X(:, 1 + round(rand * (size(X, 2) - 1)));
+    L = ones(1, size(X, 2));
     for i = 2:k
+        % deduct each data point with the cluster C
         D = X-C(:,L);
         D = cumsum(sqrt(dot(D,D,1)));
         if D(end) == 0, C(:,i:k) = X(:,ones(1,k-i+1)); return; end
@@ -32,10 +33,19 @@ while length(unique(L)) ~= k
     end
     
     % The k-means algorithm.
-    while any(L ~= L1)
+    while any(L ~= L1) % start another iteration when the labels get updated
         L1 = L;
+        % compute the new kernels C
         for i = 1:k, l = L==i; C(:,i) = sum(X(:,l),2)/sum(l); end
+        % update the lable L of each instance in X
         [~,L] = max(bsxfun(@minus,2*real(C'*X),dot(C,C,1).'),[],1);
+        
+        % add my code here
+        % compute the minimum/maximum distance from each cluster to its
+        % medoid
+        % compute the minimum/maximum distance from each cluster to the
+        % strongest hub
+        % How to compute hubness ???
     end
     
 end
