@@ -1,6 +1,8 @@
 close all;
 clear all;
 
+%% run K-Means
+%{
 % Read in the synthetic dataset
 load('30-dim-syntheticData.mat');
 
@@ -101,3 +103,46 @@ end
 
 save('30-dim-syntheticData-medoid-hub-dis.mat', 'mat_dis2medoid_all', ...
     'mat_dis2strongestHub_all', 'mat_avgIntraDis_all', 'mat_count_iter');
+%}
+%%
+load('2-dim-syntheticData-medoid-hub-dis.mat');
+
+run_index = 1; % each model has 10 runs
+count_iter = mat_count_iter(run_index);
+mat_avgIntraDis = mat_avgIntraDis_all(:, : , run_index);
+mat_dis2medoid = mat_dis2medoid_all(:, :, run_index);
+mat_dis2strongestHub = mat_dis2strongestHub_all(:, :, run_index);
+
+min_dis2medoid = 0;
+min_dis2strongestHub = 0;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
