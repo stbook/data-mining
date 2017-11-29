@@ -5,7 +5,7 @@ clear all;
 %g = gmdistribution([1;10],2,[.6;.4])
 %hist(random(g,1000),40)
 
-%{
+%%{
 Mu = [1 2;-3 -5];
 Sigma = cat(3,[2 0.2;0.2 .5],[1 0.6;0.6 0.8]);
 P = ones(1,2)/2;

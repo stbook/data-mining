@@ -113,8 +113,33 @@ mat_avgIntraDis = mat_avgIntraDis_all(:, : , run_index);
 mat_dis2medoid = mat_dis2medoid_all(:, :, run_index);
 mat_dis2strongestHub = mat_dis2strongestHub_all(:, :, run_index);
 
-min_dis2medoid = 0;
-min_dis2strongestHub = 0;
+[min_dis2medoid, min_index] = min(mat_dis2medoid(:, 1:count_iter));
+[max_dis2medoid, max_index] = max(mat_dis2medoid(:, 1:count_iter));
+%[min_dis2strongestHub
+
+% scale dis by intracluster distance
+min_dis2medoid_overIntraDis = zeros(1, count_iter);
+min_dis2strongestHub_overIntraDis = zeros(1, count_iter); 
+max_dis2medoid_overIntraDis = zeros(1, count_iter);
+max_dis2strongestHub_overIntraDis = zeros(1, count_iter);
+
+for i = 1:count_iter
+    min_avgIntraDis = mat_avgIntraDis(min_index(i), i);
+    max_avgIntraDis = mat_avgIntraDis(max_index(i), i);
+    
+    min_dis2strongestHub = mat_dis2strongestHub(min_index(i), i);
+    max_dis2strongestHub = mat_dis2strongestHub(max_index(i), i);
+    
+    min_dis2medoid_overIntraDis(i) = min_dis2medoid(i) / min_avgIntraDis;
+    min_dis2strongestHub_overIntraDis(i) = min_dis2strongestHub / min_avgIntraDis;
+    max_dis2medoid_overIntraDis(i) = max_dis2medoid(i) / max_avgIntraDis;
+    max_dis2strongestHub_overIntraDis(i) = max_dis2strongestHub / max_avgIntraDis;
+end
+
+figure
+%plot(min_dis2medoid_overIntraDis)
+plot(min_dis2strongestHub_overIntraDis)
+
 
 
 
