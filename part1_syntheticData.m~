@@ -151,7 +151,7 @@ ylabel('distance');                    % label the vertical axis
 axis([0,51,0,2]);                                % set the axis range
 grid on;                                           % add grid lines
 legend('dis2medoid', 'dis2strongestHub');
-print('-f1', sprintf('part1-synData/dim%d_run%d_min', dim, run_index), '-dpng');
+print('-f1', sprintf('part1-synData/dim%d_run%d_min', dim,  ), '-dpng');
 
 figure(2);
 hold on;
@@ -163,8 +163,7 @@ ylabel('distance');                    % label the vertical axis
 axis([0,51,0,2]);                                % set the axis range
 grid on;                                           % add grid lines
 legend('dis2medoid', 'dis2strongestHub');
-print('-f2', sprintf('part1-synData/dim%d_run%d_max', dim, run_index), '-dpng');
-close all;
+
 end
 
 %{
