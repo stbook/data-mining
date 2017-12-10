@@ -2,7 +2,7 @@ close all;
 clear all;
 
 %% run K-Means
-%%{
+%{
 % Read in the synthetic dataset
 dim = 100;
 load(sprintf('%d-dim-syntheticData.mat', dim));
@@ -106,7 +106,7 @@ save(sprintf('%d-dim-syntheticData-medoid-hub-dis.mat', dim), 'mat_dis2medoid_al
     'mat_dis2strongestHub_all', 'mat_avgIntraDis_all', 'mat_count_iter');
 %}
 %%
-dim = 30;
+dim = 100;
 load(sprintf('%d-dim-syntheticData-medoid-hub-dis.mat', dim));
 
 num_runs = size(mat_count_iter, 2);
