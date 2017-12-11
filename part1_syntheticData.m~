@@ -4,6 +4,12 @@ clear all;
 %% run K-Means
 %{
 % Read in the synthetic dataset
+% dim = 2;
+% dim = 5;
+% dim = 10;
+% dim = 20;
+% dim = 30;
+% dim = 50;
 dim = 100;
 load(sprintf('%d-dim-syntheticData.mat', dim));
 
@@ -12,8 +18,9 @@ mat_dis2strongestHub_all = [];
 mat_avgIntraDis_all = [];
 mat_count_iter = [];
 
+% run on the same data 10 times
 for m = 1:10
-    X_trans = Xs(:, :, m);
+    X_trans = Xs(:, :, 1);
     %gm = gms(1);
     
     X = X_trans';
@@ -44,7 +51,7 @@ for m = 1:10
         t = 0;
         % The k-means algorithm.
         
-        while any(L ~= L1) % start another iteration when the labels get updated
+        while count_iter < 50 % start another iteration when the labels get updated
             L1 = L;
             % compute the new kernels C
             for i = 1:k, l = L==i; C(:,i) = sum(X(:,l),2)/sum(l); end
@@ -106,39 +113,46 @@ save(sprintf('%d-dim-syntheticData-medoid-hub-dis.mat', dim), 'mat_dis2medoid_al
     'mat_dis2strongestHub_all', 'mat_avgIntraDis_all', 'mat_count_iter');
 %}
 %%
-dim = ;
+ dim = 2;
+% dim = 5;
+% dim = 10;
+% dim = 20;
+% dim = 30;
+% dim = 50;
+% dim = 100;
 load(sprintf('%d-dim-syntheticData-medoid-hub-dis.mat', dim));
 
 num_runs = size(mat_count_iter, 2);
 
 for run_index = 1:num_runs
-%run_index = 1; % each model has 10 runs
-count_iter = mat_count_iter(run_index);
-mat_avgIntraDis = mat_avgIntraDis_all(:, : , run_index);
-mat_dis2medoid = mat_dis2medoid_all(:, :, run_index);
-mat_dis2strongestHub = mat_dis2strongestHub_all(:, :, run_index);
-
-[min_dis2medoid, min_index] = min(mat_dis2medoid(:, 1:count_iter));
-[max_dis2medoid, max_index] = max(mat_dis2medoid(:, 1:count_iter));
-%[min_dis2strongestHub
-
-% scale dis by intracluster distance
-min_dis2medoid_overIntraDis = zeros(1, count_iter);
-min_dis2strongestHub_overIntraDis = zeros(1, count_iter); 
-max_dis2medoid_overIntraDis = zeros(1, count_iter);
-max_dis2strongestHub_overIntraDis = zeros(1, count_iter);
-
-for i = 1:count_iter
-    min_avgIntraDis = mat_avgIntraDis(min_index(i), i);
-    max_avgIntraDis = mat_avgIntraDis(max_index(i), i);
+    %run_index = 1; % each model has 10 runs
+    count_iter = mat_count_iter(run_index);
+    mat_avgIntraDis = mat_avgIntraDis_all(:, : , run_index);
+    mat_dis2medoid = mat_dis2medoid_all(:, :, run_index);
+    mat_dis2strongestHub = mat_dis2strongestHub_all(:, :, run_index);
     
-    min_dis2strongestHub = mat_dis2strongestHub(min_index(i), i);
-    max_dis2strongestHub = mat_dis2strongestHub(max_index(i), i);
+    [min_dis2medoid, min_index] = min(mat_dis2medoid(:, 1:count_iter));
+    [max_dis2medoid, max_index] = max(mat_dis2medoid(:, 1:count_iter));
+    %[min_dis2strongestHub
     
-    min_dis2medoid_overIntraDis(i) = min_dis2medoid(i) / min_avgIntraDis;
-    min_dis2strongestHub_overIntraDis(i) = min_dis2strongestHub / min_avgIntraDis;
-    max_dis2medoid_overIntraDis(i) = max_dis2medoid(i) / max_avgIntraDis;
-    max_dis2strongestHub_overIntraDis(i) = max_dis2strongestHub / max_avgIntraDis;
+    % scale dis by intracluster distance
+    min_dis2medoid_overIntraDis = zeros(1, count_iter);
+    min_dis2strongestHub_overIntraDis = zeros(1, count_iter);
+    max_dis2medoid_overIntraDis = zeros(1, count_iter);
+    max_dis2strongestHub_overIntraDis = zeros(1, count_iter);
+    
+    for i = 1:count_iter
+        min_avgIntraDis = mat_avgIntraDis(min_index(i), i);
+        max_avgIntraDis = mat_avgIntraDis(max_index(i), i);
+        
+        min_dis2strongestHub = mat_dis2strongestHub(min_index(i), i);
+        max_dis2strongestHub = mat_dis2strongestHub(max_index(i), i);
+        
+        min_dis2medoid_overIntraDis(i) = min_dis2medoid(i) / min_avgIntraDis;
+        min_dis2strongestHub_overIntraDis(i) = min_dis2strongestHub / min_avgIntraDis;
+        max_dis2medoid_overIntraDis(i) = max_dis2medoid(i) / max_avgIntraDis;
+        max_dis2strongestHub_overIntraDis(i) = max_dis2strongestHub / max_avgIntraDis;
+    end
 end
 
 %draw the minimal and maxmial images
@@ -166,7 +180,7 @@ grid on;                                           % add grid lines
 legend('dis2medoid', 'dis2strongestHub');
 print('-f2', sprintf('part1-synData/dim%d_run%d_max', dim, run_index), '-dpng');
 close all;
-end
+
 
 %{
 figure(1);
